@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.DTO;
@@ -10,6 +11,7 @@ namespace server.Controllers
     public class UserController : BaseAPIController
     {
         private readonly IUserRepository _userRepo;
+        private readonly IMapper _mapper;
 
         public UserController(IUserRepository userRepo) 
         {
@@ -21,10 +23,7 @@ namespace server.Controllers
         public async Task<ActionResult<UserDto>> GetUser(string username) 
         {
             User user = await _userRepo.GetUserByUsernameAsync(username);
-            return new UserDto
-            {
-                Username = user.Username
-            };
+            return _mapper.Map<UserDto>(user);
         }
     }
 }

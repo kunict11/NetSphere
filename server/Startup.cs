@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using server.Data;
+using server.Helpers;
 using server.Interfaces;
 using server.Services;
 
@@ -47,6 +48,8 @@ namespace server
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddScoped<ITokenService, TokenService>();
+
+            services.AddAutoMapper(typeof(AutoMapperProfiles));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

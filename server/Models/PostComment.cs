@@ -1,3 +1,5 @@
+using System;
+
 namespace server.Models
 {
     public class PostComment
@@ -9,5 +11,6 @@ namespace server.Models
         public User User { get; set; }
 
         public string Text { get; set; }
+        public DateTime Timestamp { get; set; }
     }
 }
