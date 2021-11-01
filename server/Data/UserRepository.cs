@@ -16,7 +16,10 @@ namespace server.Data
 
         public async Task<User> GetUserByUsernameAsync(string username)
         {
-            return await _context.Users.SingleOrDefaultAsync(user => user.Username == username);
+            return await _context.Users
+                                 .Include(u => u.Posts)
+                                 .Include(u => u.Connections)
+                                 .SingleOrDefaultAsync(user => user.Username == username);
         }
 
         public async Task<bool> SaveAllAsync()

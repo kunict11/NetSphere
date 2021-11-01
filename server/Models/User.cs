@@ -9,6 +9,8 @@ namespace server.Models
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         // public string ProfilePicture { get; set; }
-        // public List<User> Followers { get; set; }
+        public ICollection<User> Connections { get; set; }
+        public bool IsOnline { get; set; }
+        public ICollection<Post> Posts { get; set; }
     }
 }

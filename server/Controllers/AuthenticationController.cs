@@ -24,7 +24,7 @@ namespace server.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> Register(RegisterDto regDto)
+        public async Task<ActionResult<UserAuthDto>> Register(RegisterDto regDto)
         {
             if(await UserExists(regDto.Username))
                 return BadRequest("This username is already taken.");
@@ -41,7 +41,7 @@ namespace server.Controllers
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
-            return new UserDto 
+            return new UserAuthDto 
             {
                 Username = newUser.Username,
                 Token = _tokenService.GenerateToken(newUser)
@@ -49,7 +49,7 @@ namespace server.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
+        public async Task<ActionResult<UserAuthDto>> Login(LoginDto loginDto)
         {
             User userDB = await _userRepo.GetUserByUsernameAsync(loginDto.Username);
             if(userDB == null)
@@ -64,7 +64,7 @@ namespace server.Controllers
             if(!HashEquals(userDB.PasswordHash, passwordHash))
                 return Unauthorized("Wrong password.");
 
-            return new UserDto
+            return new UserAuthDto
             {
                 Username = userDB.Username,
                 Token = _tokenService.GenerateToken(userDB)
