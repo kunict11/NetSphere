@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { Input, Button, Form, FormControl, FormLabel, Container } from '@chakra-ui/react';
+import { Input, Button, FormControl, FormLabel, Container } from '@chakra-ui/react';
+import { Link, useLocation, Redirect } from 'react-router-dom';
 
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [redirectToReferrer, setRedirectToReferrer] = useState(false);
     const authService = require('../services/authentication.service');
+    const location = useLocation();
 
     const login = (e) => {
         e.preventDefault();
@@ -13,9 +16,15 @@ function Login() {
             if(res.status === 201 || res.status === 200) {
                 authService.setUserData(res.response);
                 console.log(res.response);
+                setRedirectToReferrer(true);
             }
         });
     };
+
+    if(redirectToReferrer) {
+        console.log(location);
+        return <Redirect to={ location.state?.from.pathname || '/' }/>
+    }
 
     return (
         <Container>
@@ -37,7 +46,7 @@ function Login() {
                         value={ password }
                         onChange={ (e) => { setPassword(e.target.value) } }/>
                     <Button type='submit'>Log in</Button>
-                    <span>Don't have an account? <a>Click here to sign up.</a> </span>
+                    <span>Don't have an account? <Link to='/register'>Click here to sign up.</Link> </span>
                 </FormControl>
             </form>
         </Container>

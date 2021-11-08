@@ -37,5 +37,6 @@ export const logout = () => {
 }
 
 export const userLoggedIn = () => {
-    return localStorage.getItem('user') != null;
+    console.log(localStorage.getItem('user') !== null);
+    return localStorage.getItem('user') !== null;
 }
