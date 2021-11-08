@@ -46,6 +46,7 @@ namespace server
                 options.UseSqlServer(Configuration["Data:NSUsers:ConnectionString"]);
             });
 
+            services.AddCors();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddScoped<ITokenService, TokenService>();
 
@@ -79,6 +80,9 @@ namespace server
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(policy => 
+                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
 
             app.UseEndpoints(endpoints =>
             {

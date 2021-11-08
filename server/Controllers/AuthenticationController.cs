@@ -7,6 +7,7 @@ using System.Text;
 using System.Security.Cryptography;
 using server.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace server.Controllers
 {
@@ -35,7 +36,9 @@ namespace server.Controllers
             {
                 Username = regDto.Username,
                 PasswordSalt = hmac.Key,
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(regDto.Password))
+                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(regDto.Password)),
+                Connections = new List<User>(),
+                Posts = new List<Post>()
             };
 
             _context.Users.Add(newUser);
