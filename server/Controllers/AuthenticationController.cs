@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using server.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using AutoMapper;
 
 namespace server.Controllers
 {
@@ -16,12 +17,14 @@ namespace server.Controllers
         private readonly DataContext _context;
         private readonly IUserRepository _userRepo;
         private readonly ITokenService _tokenService;
+        private readonly IMapper _mapper;
 
-        public AuthenticationController(DataContext context, IUserRepository userRepo, ITokenService tokenService)
+        public AuthenticationController(DataContext context, IUserRepository userRepo, ITokenService tokenService, IMapper mapper)
         {
             _context = context;
             _userRepo = userRepo;
             _tokenService = tokenService;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -44,11 +47,10 @@ namespace server.Controllers
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
-            return new UserAuthDto 
-            {
-                Username = newUser.Username,
-                Token = _tokenService.GenerateToken(newUser)
-            };
+            UserAuthDto userAuth = _mapper.Map<UserAuthDto>(newUser);
+            userAuth.Token = _tokenService.GenerateToken(newUser);
+
+            return userAuth;
         }
 
         [HttpPost("login")]
@@ -67,11 +69,10 @@ namespace server.Controllers
             if(!HashEquals(userDB.PasswordHash, passwordHash))
                 return Unauthorized("Wrong password.");
 
-            return new UserAuthDto
-            {
-                Username = userDB.Username,
-                Token = _tokenService.GenerateToken(userDB)
-            };
+            UserAuthDto userAuth = _mapper.Map<UserAuthDto>(userDB);
+            userAuth.Token = _tokenService.GenerateToken(userDB);
+
+            return userAuth;
         }
 
         private async Task<bool> UserExists(string username)

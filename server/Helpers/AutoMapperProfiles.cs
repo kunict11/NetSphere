@@ -9,6 +9,7 @@ namespace server.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<User, UserDto>();
+            CreateMap<User, UserAuthDto>();
         }
     }
 }
