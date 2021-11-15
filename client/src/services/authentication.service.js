@@ -1,27 +1,20 @@
 import { ajax } from 'rxjs/ajax';
 import { authUrl } from '../configuration/environment';
 
-var currentUser = null;
-
 export const setUserData = (user) => {
-    localStorage.setItem('user', user.token);
-    currentUser = user;
+    localStorage.setItem('user', user);
 };
 
 export const getCurrentUser = () => {
-    return currentUser;
+    return localStorage.getItem('user');
 };
 
 export const getToken = () => {
-    const token = localStorage.getItem('user');
+    const token = localStorage.getItem('user').token;
 
     if(!token)
         return null;
     return token;
-};
-
-export const setToken = (token) => {
-    localStorage.setItem('user', token);
 };
 
 export const register = (username, password) => {    
@@ -37,6 +30,5 @@ export const logout = () => {
 }
 
 export const userLoggedIn = () => {
-    console.log(localStorage.getItem('user') !== null);
     return localStorage.getItem('user') !== null;
 }

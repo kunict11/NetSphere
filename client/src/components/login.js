@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { Input, Button, FormControl, FormLabel, Container } from '@chakra-ui/react';
+import { 
+    Input,
+    Button,
+    FormControl, 
+    FormLabel, 
+    Container, 
+    Box, 
+    Heading 
+} from '@chakra-ui/react';
 import { Link, useLocation, Redirect } from 'react-router-dom';
 
 function Login() {
@@ -28,27 +36,36 @@ function Login() {
 
     return (
         <Container>
-            <form onSubmit={ login }>
-                <FormControl isRequired>
-                    <FormLabel>Username</FormLabel>
-                    <Input 
-                        type='text' 
-                        placeholder='Username' 
-                        value={ username } 
-                        onChange={ (e) => { setUsername(e.target.value) } }/>
-                </FormControl>
+            <Heading mt='2rem' as='h1' size='3xl'>Net Sphere </Heading>
+            <Box mt='3rem' padding='1rem 2rem 2.5rem 2rem' border='solid 1px #51555E' borderRadius='11'>
+                <form onSubmit={ login }>
+                    <FormControl isRequired>
+                        <FormLabel>Username</FormLabel>
+                        <Input 
+                            type='text' 
+                            placeholder='Username' 
+                            value={ username } 
+                            onChange={ (e) => { setUsername(e.target.value) } }/>
+                    </FormControl>
 
-                <FormControl isRequired>
-                    <FormLabel>Password</FormLabel>
-                    <Input 
-                        type='password' 
-                        placeholder='Password'
-                        value={ password }
-                        onChange={ (e) => { setPassword(e.target.value) } }/>
-                    <Button type='submit'>Log in</Button>
-                    <span>Don't have an account? <Link to='/register'>Click here to sign up.</Link> </span>
-                </FormControl>
-            </form>
+                    <FormControl mt='4' isRequired>
+                        <FormLabel>Password</FormLabel>
+                        <Input 
+                            type='password' 
+                            placeholder='Password'
+                            value={ password }
+                            onChange={ (e) => { setPassword(e.target.value) } }/>
+                        <Box mt='6'>
+                            <Button colorScheme='blue' mr='4' type='submit'>Log in</Button>
+                            <Box display='inline' color='#687FB0'>Don't have an account? 
+                                <Link to='/register' style={{color: '#00697D', textDecoration: 'underline'}}>
+                                    Click here to sign up.
+                                </Link> 
+                            </Box>
+                        </Box>
+                    </FormControl>
+                </form>
+            </Box>
         </Container>
     );
 }

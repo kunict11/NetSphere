@@ -4,10 +4,12 @@ import './index.css';
 import App from './App/App';
 import reportWebVitals from './reportWebVitals';
 
-import { BrowserRouter } from 'react-router-dom';
+import { ColorModeScript } from '@chakra-ui/react';
+import theme from './configuration/theme';
 
 ReactDOM.render(
   <React.StrictMode>
+    <ColorModeScript initialColorMode={ theme.config.initialColorMode }/>
     <App />
   </React.StrictMode>,
   document.getElementById('root')

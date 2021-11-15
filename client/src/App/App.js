@@ -1,16 +1,17 @@
 import './App.css';
 
 import { ChakraProvider } from '@chakra-ui/react';
-import { Route, BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import Home from '../components/home';
 import Login from '../components/login';
 import Register from '../components/register';
 import PrivateRoute from '../routing/private.route';
 import PublicRoute from '../routing/public.route';
+import theme from '../configuration/theme';
 
 function App() {
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={ theme }>
       <BrowserRouter>
         <PrivateRoute path='/' exact>
           <Home/>
