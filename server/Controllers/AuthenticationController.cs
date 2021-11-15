@@ -39,9 +39,7 @@ namespace server.Controllers
             {
                 Username = regDto.Username,
                 PasswordSalt = hmac.Key,
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(regDto.Password)),
-                Connections = new List<User>(),
-                Posts = new List<Post>()
+                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(regDto.Password))
             };
 
             _context.Users.Add(newUser);

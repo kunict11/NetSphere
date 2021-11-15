@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using server.DTO;
+using System.Text.Json.Serialization;
 
 namespace server.Models
 {
@@ -9,11 +9,14 @@ namespace server.Models
         public int Id { get; set; }
         public string Text { get; set; }
         // public string Image { get; set; }
-        public DateTime Timestamp { get; set; }
-        public ICollection<PostLike> Likes { get; set; }
-        public ICollection<PostComment> Comments { get; set; }
+        public DateTime Timestamp { get; set; } = DateTime.Now;
+        public int Likes { get; set; } = 0;
+        public ICollection<PostComment> Comments { get; set; } = new List<PostComment>();
 
+        [JsonIgnore]
         public User User { get; set; }
+        [JsonIgnore]
         public int UserId { get; set; }
+        public bool LikedByUser { get; set; } = false;
     }
 }

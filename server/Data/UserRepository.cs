@@ -2,6 +2,8 @@ using System.Threading.Tasks;
 using server.Interfaces;
 using server.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace server.Data
 {
@@ -30,6 +32,17 @@ namespace server.Data
         public void Update(User user)
         {
             _context.Entry(user).State = EntityState.Modified;
+        }
+
+        public async Task<ICollection<Post>> GetAllLikedPosts(string username)
+        {
+            User user = await _context.Users.SingleOrDefaultAsync(user => user.Username == username);
+            var likedPosts = from conn in user.Connections
+                             from post in conn.Posts
+                             where post.LikedByUser == true
+                             select post;
+
+            return likedPosts.ToList();
         }
     }
 }
