@@ -1,11 +1,11 @@
 import { Route, Redirect } from 'react-router-dom';
+import AuthenticationService from '../services/authentication.service';
 
-function PrivateRoute({ children, ...rest }) {
-    const authService = require('../services/authentication.service');
+function PrivateRoute({ children, ...rest }: any) {
     return (
         <Route
             { ...rest }
-            render={ (props) => authService.userLoggedIn()
+            render={ (props) => AuthenticationService.userLoggedIn()
                 ? children
                 : <Redirect to={ { pathname: '/login', state: { from: props.location } } }/> }
         />

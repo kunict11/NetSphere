@@ -2,13 +2,13 @@ import { Menu, MenuButton, MenuList, MenuItem, Image, Button, Box } from '@chakr
 import { IoPersonCircleOutline, IoLogOutOutline } from 'react-icons/io5';
 import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
-const authService = require('../services/authentication.service');
+import AuthenticationService from '../services/authentication.service';
 
 function Navbar() {
-    const [redirectToLogin, setRedirectToLogin] = useState(false);
+    const [redirectToLogin, setRedirectToLogin] = useState<boolean>(false);
 
     const logout = () => {
-        authService.logout();
+        AuthenticationService.logout();
         setRedirectToLogin(true);
     };
 
@@ -28,7 +28,7 @@ function Navbar() {
                             mr="12px"
                             display='inline'
                         />
-                        { authService.getCurrentUser().username }
+                        user
                     </MenuButton>
                     <MenuList>
                         <MenuItem icon={ <IoPersonCircleOutline size='25px' color='#48BB78' /> } minH="48px">

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import { 
     Input,
     Button,
@@ -9,18 +9,20 @@ import {
     Heading 
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import AuthenticationService from '../services/authentication.service';
+import { AjaxResponse } from 'rxjs/ajax';
+import { User } from 'src/models/user';
 
 function Register() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const authService = require('../services/authentication.service');
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
 
-    const register = (e) => {
+    const register = (e: SyntheticEvent) => {
         e.preventDefault();
 
-        authService.register(username, password).subscribe(res => {
+        AuthenticationService.register(username, password).subscribe((res: AjaxResponse<User>) => {
             if(res.status === 201 || res.status === 200) {
-                authService.setUserData(res.response);
+                AuthenticationService.setUserData(res.response);
             }
         });
     };
@@ -29,7 +31,7 @@ function Register() {
         <Container>
             <Heading mt='2rem' as='h1' size='3xl'>Register</Heading>
             <Box mt='3rem' padding='1rem 2rem 2.5rem 2rem' border='solid 1px #51555E' borderRadius='11'>
-                <form onSubmit={ register }>
+                <form onSubmit={ (e: SyntheticEvent) => { register(e) } }>
                     <FormControl isRequired>
                         <FormLabel>Username</FormLabel>
                         <Input 

@@ -1,7 +1,7 @@
 import { Container } from '@chakra-ui/react';
 import Navbar from './navbar';
 
-function Home(props) {
+function Home() {
     return (
         <div>
             <Navbar/>
