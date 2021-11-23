@@ -12,8 +12,6 @@ namespace server.Models
         public DateTime Timestamp { get; set; } = DateTime.Now;
         public int Likes { get; set; } = 0;
         public ICollection<PostComment> Comments { get; set; } = new List<PostComment>();
-
-        [JsonIgnore]
         public User User { get; set; }
         [JsonIgnore]
         public int UserId { get; set; }

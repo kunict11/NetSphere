@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -32,6 +34,21 @@ namespace server.Controllers
             if(await _userRepo.SaveAllAsync())
                 return post;
             return BadRequest("An error occured while posting.");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<Post>>> GetAllPosts()
+        {
+            string username = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            User user = await _userRepo.GetUserByUsernameAsync(username);
+
+            List<Post> posts = new List<Post>();
+
+            posts.AddRange(user.Posts);
+            foreach (var conn in user.Connections)
+                posts.AddRange(conn.Posts);
+
+            return Ok(posts.OrderByDescending(p => p.Timestamp).ToList());
         }
     }
 }

@@ -1,26 +1,28 @@
-import { Observable } from 'rxjs';
-import { ajax, AjaxResponse } from 'rxjs/ajax';
+import { ajax } from 'rxjs/ajax';
 import { User } from 'src/models/user';
 import { authUrl } from '../configuration/environment';
 
 class AuthenticationService {
-    private user: User | null = null;
+    // private user: User | null = null;
     
     public setUserData = (user: User) => {
-        localStorage.setItem('user', user.token);
-        this.user = new User(user.id, user.username, user.token, user.posts, user.connections);
+        localStorage.setItem('user', JSON.stringify(user));
     };
     
     public getCurrentUser = () => {
-        return this.user;
+        const userData = localStorage.getItem('user');
+
+        if(userData !== null)
+            return JSON.parse(userData) as User;
+        return null;
     };
     
     public getToken = () => {
-        const token: string | null= localStorage.getItem('user');
+        const user: User | null= this.getCurrentUser()
     
-        if(!token)
+        if(!user)
             return null;
-        return token;
+        return user.token;
     };
     
     public register = (username: string, password: string) => {    

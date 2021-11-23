@@ -28,7 +28,7 @@ function Navbar() {
                             mr="12px"
                             display='inline'
                         />
-                        user
+                        { AuthenticationService.getCurrentUser()?.username }
                     </MenuButton>
                     <MenuList>
                         <MenuItem icon={ <IoPersonCircleOutline size='25px' color='#48BB78' /> } minH="48px">

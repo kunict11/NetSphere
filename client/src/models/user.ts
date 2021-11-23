@@ -9,10 +9,10 @@ export class User {
         private _connections: User[]
     ){  }
     
-    public get id(): number { return this._id }
-    public get username(): string { return this._username }
-    public get token(): string { return this._token; }
-    public get posts(): Post[] { return this._posts }
+    public get id()         : number { return this._id }
+    public get username()   : string { return this._username }
+    public get token()      : string { return this._token; }
+    public get posts()      : Post[] { return this._posts }
     public get connections(): User[] { return this._connections }
 
 }

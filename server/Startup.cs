@@ -36,10 +36,7 @@ namespace server
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers()
-                .AddJsonOptions(options => {
-                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-                });
+            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "server", Version = "v1" });
