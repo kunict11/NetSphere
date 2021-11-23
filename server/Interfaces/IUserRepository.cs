@@ -9,6 +9,5 @@ namespace server.Interfaces
          Task<User> GetUserByUsernameAsync(string username);
          Task<bool> SaveAllAsync();
          void Update(User user);
-         Task<ICollection<Post>> GetAllLikedPosts(string username);
     }
 }

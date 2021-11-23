@@ -26,10 +26,7 @@ namespace server.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("LikedByUser")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Likes")
+                    b.Property<int>("LikesCount")
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
@@ -38,14 +35,14 @@ namespace server.Migrations
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Post");
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("server.Models.PostComment", b =>
@@ -67,6 +64,21 @@ namespace server.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("PostComment");
+                });
+
+            modelBuilder.Entity("server.Models.PostLike", b =>
+                {
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PostId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PostLike");
                 });
 
             modelBuilder.Entity("server.Models.User", b =>
@@ -99,9 +111,7 @@ namespace server.Migrations
                 {
                     b.HasOne("server.Models.User", "User")
                         .WithMany("Posts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -110,6 +120,25 @@ namespace server.Migrations
                 {
                     b.HasOne("server.Models.Post", "Post")
                         .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("server.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("server.Models.PostLike", b =>
+                {
+                    b.HasOne("server.Models.Post", "Post")
+                        .WithMany()
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

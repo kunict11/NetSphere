@@ -32,10 +32,10 @@ namespace server.Controllers
 
         [HttpPatch("connect")]
         [Authorize]
-        public async Task<ActionResult> ConnectWithUser(string username)
+        public async Task<ActionResult> ConnectWithUser([FromBody] User user)
         {
-            User user = await _userRepo.GetUserByUsernameAsync(username);
-            if(user == null)
+            User u = await _userRepo.GetUserByUsernameAsync(user.Username);
+            if(u == null)
             {
                 return NotFound("User with given username doesn't exist.");
             }
@@ -43,7 +43,7 @@ namespace server.Controllers
             string currentUserUsername = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             User currentUser = await _userRepo.GetUserByUsernameAsync(currentUserUsername);
 
-            currentUser.Connections.Add(user);
+            currentUser.Connections.Add(u);
             _userRepo.Update(currentUser);
 
             if(await _userRepo.SaveAllAsync())

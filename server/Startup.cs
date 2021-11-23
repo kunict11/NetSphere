@@ -49,6 +49,7 @@ namespace server
 
             services.AddCors();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IPostRepository, PostRepository>();
             services.AddScoped<ITokenService, TokenService>();
 
             services.AddAutoMapper(typeof(AutoMapperProfiles));
