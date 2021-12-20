@@ -1,4 +1,5 @@
 import { ajax } from 'rxjs/ajax';
+import { HttpResponse } from 'src/helpers/http.response';
 import { Post } from 'src/models/post';
 import { User } from 'src/models/user';
 import { postUrl, userUrl } from '../configuration/environment'
@@ -14,6 +15,13 @@ class UserService {
         if(token != null)
             return ajax.get<Post[]>(`${postUrl}`, { 'Authorization': `bearer ${token}` });
         return ajax.get<Post[]>(`${postUrl}`);
+    }
+
+    public connectWithUser = (user: User) => {
+        const token = AuthenticationService.getToken();
+        if(token != null)
+            return ajax.patch<HttpResponse>(`${userUrl}/connect`, { username: user.username }, { 'Authorization': `bearer ${token}` });
+        return ajax.patch<HttpResponse>(`${userUrl}/connect`, { username: user.username });
     }
 }
 

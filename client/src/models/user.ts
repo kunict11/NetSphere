@@ -15,4 +15,5 @@ export class User {
     public get posts()      : Post[] { return this._posts }
     public get connections(): User[] { return this._connections }
 
+    public set connections(users: User[]) { this._connections = users; }
 }

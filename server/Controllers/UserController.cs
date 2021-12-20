@@ -7,6 +7,7 @@ using server.Interfaces;
 using server.Models;
 using System;
 using System.Security.Claims;
+using server.Helpers;
 
 namespace server.Controllers
 {
@@ -32,12 +33,16 @@ namespace server.Controllers
 
         [HttpPatch("connect")]
         [Authorize]
-        public async Task<ActionResult> ConnectWithUser([FromBody] User user)
+        public async Task<ActionResult<ResponseInfo>> ConnectWithUser([FromBody] User user)
         {
             User u = await _userRepo.GetUserByUsernameAsync(user.Username);
             if(u == null)
             {
-                return NotFound("User with given username doesn't exist.");
+                var notfound = new ResponseInfo {
+                    Message = "User with given username doesn't exist.",
+                    StatusCode = 404
+                };
+                return NotFound(notfound);
             }
 
             string currentUserUsername = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -46,10 +51,20 @@ namespace server.Controllers
             currentUser.Connections.Add(u);
             _userRepo.Update(currentUser);
 
-            if(await _userRepo.SaveAllAsync())
-                return Ok($"You have successfully connected with {user.Username}");
+            if(await _userRepo.SaveAllAsync()) 
+            {
+                var res = new ResponseInfo {
+                    Message = $"You have successfully connected with {user.Username}",
+                    StatusCode = 201
+                };
+                return Ok(res);
+            }
+                var errorResponse = new ResponseInfo {
+                    Message = $"An error occured while attempting to connect with {user.Username}",
+                    StatusCode = 500
+                };
 
-            return BadRequest($"An error occured while attempting to connect with {user.Username}");
+            return BadRequest(errorResponse);
         }
     }
 }

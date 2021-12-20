@@ -8,14 +8,17 @@ import {
     Box, 
     Heading 
 } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import AuthenticationService from '../services/authentication.service';
 import { AjaxResponse } from 'rxjs/ajax';
 import { User } from 'src/models/user';
+import { LocationState } from 'src/helpers/locationState';
 
 function Register() {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [redirectToReferrer, setRedirectToReferrer] = useState<boolean>(false);
+    const location = useLocation<LocationState>();
 
     const register = (e: SyntheticEvent) => {
         e.preventDefault();
@@ -23,9 +26,14 @@ function Register() {
         AuthenticationService.register(username, password).subscribe((res: AjaxResponse<User>) => {
             if(res.status === 201 || res.status === 200) {
                 AuthenticationService.setUserData(res.response);
+                setRedirectToReferrer(true);
             }
         });
     };
+
+    if(redirectToReferrer) {
+        return <Redirect to={ location.state?.from.pathname || '/' }/>
+    }
 
     return (
         <Container>

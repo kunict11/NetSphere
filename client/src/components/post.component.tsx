@@ -14,7 +14,7 @@ function PostComponent(props: { post: Post }) {
                     mr="12px"
                     display='inline'
                 />
-                <Heading fontSize='14pt'>{ props.post.user.username }</Heading>
+                <Heading fontSize='14pt'><a href={ `/user/${props.post.user.username}` }>{ props.post.user.username }</a></Heading>
                 <Text ml='1.5rem' fontSize='12pt' color='gray.600'>{ new Date(props.post.timestamp).toLocaleDateString('en-UK') }</Text>
                 <Text mt='10' display='block' ml='-9.5rem'>
                     { props.post.text }
@@ -22,7 +22,7 @@ function PostComponent(props: { post: Post }) {
             </Flex>
             <Flex alignItems='flex-start'>
                 <button>
-                { props.post.likedByUser 
+                { false 
                     ? <BsSuitHeartFill style={ heartIconStyle }/> 
                     : <BsSuitHeart style={ heartIconStyle }/> }
                 </button>

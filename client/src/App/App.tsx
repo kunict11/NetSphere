@@ -8,6 +8,7 @@ import Register from '../components/register';
 import PrivateRoute from '../routing/private.route';
 import PublicRoute from '../routing/public.route';
 import theme from '../configuration/theme';
+import UserDetails from 'src/components/user.details';
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
         <PublicRoute path='/register'>
           <Register/>
         </PublicRoute>
+        <PrivateRoute path='/user/:username' exact>
+          <UserDetails/>
+        </PrivateRoute>
       </BrowserRouter>
     </ChakraProvider>
   );
