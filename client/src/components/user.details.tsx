@@ -32,6 +32,7 @@ function UserDetails() {
   const [user, setUser] = useState<User>();
   const [alertOpen, setAlertOpen] = useState<boolean>(false);
   const [alertMsg, setAlertMsg] = useState<string>("");
+  const [counter, setCounter] = useState<number>(0);
 
   let userSub: Subscription = new Subscription();
   let connectSub: Subscription = new Subscription();
@@ -48,7 +49,11 @@ function UserDetails() {
       userSub.unsubscribe();
       connectSub.unsubscribe();
     };
-  }, []);
+  }, [counter]);
+
+  const triggerUpdate = () => {
+    setCounter(counter + 1);
+  };
 
   const isConnectedWith = (): boolean => {
     return AuthenticationService.getCurrentUser()!.connections.some(
@@ -63,9 +68,7 @@ function UserDetails() {
           console.log(res.response);
           setAlertMsg(res.response.message);
           openAlert();
-          let currentUser: User = AuthenticationService.getCurrentUser()!;
-          currentUser.connections.push(user);
-          AuthenticationService.setUserData(currentUser);
+          triggerUpdate();
         }
       );
   };
@@ -130,7 +133,7 @@ function UserDetails() {
                 ) : isConnectedWith() ||
                   user?.username ===
                     AuthenticationService.getCurrentUser()?.username ? (
-                  <PostList posts={user.posts} />
+                  <PostList posts={user.posts} triggerUpdate={triggerUpdate} />
                 ) : (
                   `Connect with ${user.username} to see their posts`
                 )}

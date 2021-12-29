@@ -17,8 +17,10 @@ import PostTextarea from "./post.textarea";
 
 function Home() {
   const [posts, setPosts] = useState<any[]>([]);
+  const [likedPosts, setLikedPosts] = useState<any[]>([]);
   let postSub: Subscription = new Subscription();
-  const [stateChanged, setStateChanged] = useState<boolean>(false);
+  let likedPostsSub: Subscription = new Subscription();
+  const [counter, setCounter] = useState<number>(0);
 
   useEffect(() => {
     postSub = UserService.getAllPosts().subscribe(
@@ -26,16 +28,26 @@ function Home() {
         setPosts(res.response);
       }
     );
-
+    likedPostsSub = UserService.getAllLikedPosts().subscribe(
+      (res: AjaxResponse<Post[]>) => {
+        setLikedPosts(res.response);
+      }
+    );
     return () => {
       postSub.unsubscribe();
+      likedPostsSub.unsubscribe();
     };
-  }, [stateChanged]);
+  }, [counter]);
+
+  const triggerUpdate = () => {
+    setCounter(counter + 1);
+  };
+
   return (
     <div>
       <Navbar />
       <Container mt="2rem">
-        <PostTextarea triggerUpdate={setStateChanged} />
+        <PostTextarea triggerUpdate={triggerUpdate} />
         <Tabs size="lg" variant="enclosed" w="2xl" ml="-6rem" mt="2rem">
           <TabList>
             <Tab>All Posts</Tab>
@@ -43,9 +55,19 @@ function Home() {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <PostList posts={posts} />
+              <PostList
+                posts={posts}
+                likedPosts={likedPosts}
+                triggerUpdate={triggerUpdate}
+              />
             </TabPanel>
-            <TabPanel></TabPanel>
+            <TabPanel>
+              <PostList
+                posts={likedPosts}
+                likedPosts={likedPosts}
+                triggerUpdate={triggerUpdate}
+              />
+            </TabPanel>
           </TabPanels>
         </Tabs>
       </Container>

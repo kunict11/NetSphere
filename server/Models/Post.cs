@@ -16,7 +16,7 @@ namespace server.Models
         public ICollection<PostComment> Comments { get; set; } = new List<PostComment>();
         public User User { get; set; }
         [JsonIgnore]
-        // possibly not and ideal solution but it works kind of...
+        // possibly not an ideal solution but it works kind of...
         public int? UserId { get; set; }
     }
 }

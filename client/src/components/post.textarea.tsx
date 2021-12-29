@@ -4,7 +4,7 @@ import { AjaxResponse } from "rxjs/ajax";
 import { Post } from "src/models/post";
 import UserService from "src/services/user.service";
 
-const PostTextarea = (props: { triggerUpdate: (x: boolean) => void }) => {
+const PostTextarea = (props: { triggerUpdate: () => void }) => {
   const [postText, setPostText] = useState<string>("");
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -14,7 +14,7 @@ const PostTextarea = (props: { triggerUpdate: (x: boolean) => void }) => {
     UserService.createPost(postText).subscribe((res: AjaxResponse<Post>) => {
       console.log(res);
       if (res.status === 200) {
-        props.triggerUpdate(true);
+        props.triggerUpdate();
         setPostText("");
       }
     });
