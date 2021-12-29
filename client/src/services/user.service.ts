@@ -23,6 +23,12 @@ class UserService {
             return ajax.patch<HttpResponse>(`${userUrl}/connect`, { username: user.username }, { 'Authorization': `bearer ${token}` });
         return ajax.patch<HttpResponse>(`${userUrl}/connect`, { username: user.username });
     }
+
+    public createPost = (text: string) => {
+        const token = AuthenticationService.getToken()!;
+
+        return ajax.post<Post>(postUrl, { text: text }, { 'Authorization': `bearer ${token}` });
+    }
 }
 
 export default new UserService();
